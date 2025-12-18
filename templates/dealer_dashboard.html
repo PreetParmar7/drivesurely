@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-5">
+  <h2 class="mb-4">Dealer Dashboard</h2>
+{% if not user.dealer_profile.is_verified %}
+  <div class="alert alert-warning">
+    Your dealer account is pending admin verification.
+  </div>
+{% endif %}
+
+  {% if cars %}
+    <table class="table table-dark table-hover">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Price</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for car in cars %}
+        <tr>
+          <td>{{ car.title }}</td>
+          <td>₹ {{ car.price }}</td>
+          <td>{{ car.status }}</td>
+          <td>
+            <a href="{% url 'edit_car' car.id %}" class="btn btn-sm btn-warning">
+              Edit
+            </a>
+
+            <a href="{% url 'delete_car' car.id %}" class="btn btn-sm btn-danger">
+              Delete
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+  <div class="text-center py-5">
+    <h5>No cars listed yet</h5>
+    <p class="text-muted">
+      Add your first car to start receiving enquiries.
+    </p>
+    <a href="{% url 'add_car' %}" class="btn btn-dark">
+      Add Car
+    </a>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}

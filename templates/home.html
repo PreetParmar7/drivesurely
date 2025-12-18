@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- =========================
+     FULL BLEED VIDEO HERO
+========================== -->
+<section class="cz-hero">
+  <video autoplay muted loop playsinline class="cz-hero-video">
+    <source src="{% static 'videos/hero.mp4' %}" type="video/mp4">
+  </video>
+
+  <div class="cz-hero-content">
+    <h1>Where Premium Cars Meet Trusted Dealers</h1>
+    <p>Verified listings • Transparent pricing • Direct enquiries</p>
+
+    <div class="cz-hero-actions">
+      <a href="{% url 'car_list' %}" class="btn btn-primary">Browse Cars</a>
+      <a href="{% url 'contact' %}" class="btn btn-outline-light">Contact Us</a>
+    </div>
+  </div>
+</section>
+<!-- ✅ HERO CLOSED PROPERLY -->
+
+
+<!-- =========================
+     HOME CONTENT (BOXED)
+========================== -->
+<section class="cz-home">
+
+  <!-- EDITORIAL -->
+  <section class="editorial-section">
+    <div class="editorial-container">
+      <div class="editorial-text">
+        <h2>Buying cars, done right.</h2>
+        <p>
+          Every car on DriveSurely is verified, transparently priced,
+          and listed by trusted dealers.
+        </p>
+
+        <a href="{% url 'car_list' %}" class="editorial-link">
+          Explore available cars →
+        </a>
+      </div>
+
+      <div class="editorial-visual">
+        <div class="editorial-shape"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST STRIP -->
+  <section class="trust-strip text-center">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-md-4">
+          <h3>✔ Verified Dealers</h3>
+          <p>Every dealer is verified for trust & authenticity</p>
+        </div>
+        <div class="col-md-4">
+          <h3>🚗 Quality Listings</h3>
+          <p>Real images, detailed specs, transparent pricing</p>
+        </div>
+        <div class="col-md-4">
+          <h3>📩 Direct Enquiry</h3>
+          <p>Connect directly with dealers — no middlemen</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-it-works">
+    <div class="how-container">
+      <h2>How DriveSurely Works</h2>
+
+      <div class="how-grid">
+        <div class="how-card">
+          <img src="https://cdn-icons-png.flaticon.com/512/743/743131.png">
+          <h5>Browse Cars</h5>
+          <p>Explore verified listings from trusted dealers</p>
+        </div>
+
+        <div class="how-card">
+          <img src="https://cdn-icons-png.flaticon.com/512/1828/1828919.png">
+          <h5>Compare</h5>
+          <p>Compare specs, price, mileage & features</p>
+        </div>
+
+        <div class="how-card">
+          <img src="https://cdn-icons-png.flaticon.com/512/1041/1041916.png">
+          <h5>Enquire</h5>
+          <p>Contact dealers instantly & securely</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST METRICS -->
+  <section class="trust-metrics">
+    <div class="trust-container">
+      <div class="trust-item">
+        <h3>5,000+</h3>
+        <p>Verified Cars</p>
+      </div>
+      <div class="trust-item">
+        <h3>1,200+</h3>
+        <p>Trusted Dealers</p>
+      </div>
+      <div class="trust-item">
+        <h3>10,000+</h3>
+        <p>Happy Customers</p>
+      </div>
+      <div class="trust-item">
+        <h3>100%</h3>
+        <p>Transparent Pricing</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta">
+    <div class="container">
+      <h2>Ready to find your next car?</h2>
+      <a href="{% url 'car_list' %}" class="btn btn-primary btn-lg mt-4">
+        Browse Cars
+      </a>
+    </div>
+  </section>
+
+</section>
+<!-- ✅ HOME CONTENT CLOSED -->
+
+{% endblock %}

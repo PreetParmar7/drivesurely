@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5 text-center">
+    <h3>Delete Car</h3>
+    <p>Are you sure you want to delete <strong>{{ car.title }}</strong>?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button class="btn btn-danger me-2">Yes, Delete</button>
+        <a href="{% url 'dealer_dashboard' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

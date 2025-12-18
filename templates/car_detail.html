@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+
+  <a href="{% url 'car_list' %}" class="btn btn-outline-secondary mb-4">
+    ← Back to Listings
+  </a>
+
+  <!-- MAIN CARD -->
+  <div class="card shadow-lg border-0 p-4">
+    <div class="row g-4 align-items-center">
+
+      <!-- LEFT: IMAGE / CAROUSEL -->
+      <div class="col-md-6">
+        <div id="carCarousel"
+             class="carousel slide"
+             data-bs-ride="carousel">
+
+          <div class="carousel-inner rounded">
+
+            {% if car.main_image %}
+              <div class="carousel-item active">
+                <img src="{{ car.main_image.url }}"
+                     class="d-block w-100 rounded"
+                     alt="Car image">
+              </div>
+            {% endif %}
+
+            {% for img in car.images.all %}
+              <div class="carousel-item {% if not car.main_image and forloop.first %}active{% endif %}">
+                <img src="{{ img.image.url }}"
+                     class="d-block w-100 rounded"
+                     alt="Gallery image">
+              </div>
+            {% endfor %}
+
+          </div>
+
+          <button class="carousel-control-prev"
+                  type="button"
+                  data-bs-target="#carCarousel"
+                  data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+          </button>
+
+          <button class="carousel-control-next"
+                  type="button"
+                  data-bs-target="#carCarousel"
+                  data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- RIGHT: DETAILS -->
+      <div class="col-md-6">
+
+        <h2 class="fw-bold text-dark">{{ car.title }}</h2>
+
+        <p class="text-muted mb-1">
+          {{ car.brand }} • {{ car.year }}
+        </p>
+<p class="text-muted mt-2">
+  Sold by:
+  <strong>
+    {{ car.dealer.get_full_name|default:car.dealer.username }}
+  </strong>
+
+  {% if car.dealer.dealer_profile.is_verified %}
+    <span class="badge bg-success ms-2">Verified</span>
+    <a href="{% url 'dealer_public_profile' car.dealer.username %}"
+       class="ms-2 text-decoration-none">
+      View Dealer →
+    </a>
+  {% endif %}
+</p>
+<p class="text-muted">
+  {% if car.dealer.dealer_profile.is_pending_verification %}
+    <span class="badge bg-warning text-dark ms-2">Pending Verification</span>
+  {% endif %}
+</p>
+
+
+        <h3 class="text-primary fw-bold mb-3">
+          ₹ {{ car.price }}
+        </h3>
+
+        <span class="badge bg-success mb-3">
+          {{ car.status }}
+        </span>
+
+        <!-- SPECS -->
+        <div class="bg-light rounded p-3 mt-3">
+          <p><strong>Fuel:</strong> {{ car.fuel_type }}</p>
+          <p><strong>Year:</strong> {{ car.year }}</p>
+          <p><strong>Engine:</strong> {{ car.engine_capacity|default:"—" }}</p>
+          <p><strong>Transmission:</strong> {{ car.transmission|default:"—" }}</p>
+          <p><strong>Mileage:</strong> {{ car.mileage|default:"—" }}</p>
+        </div>
+
+        <!-- CTA -->
+        <div class="mt-4 d-flex gap-2">
+          {% if not user.is_authenticated or car.dealer != user %}
+            <a href="{% url 'send_enquiry' car.id %}"
+               class="btn btn-dark w-100">
+              Send Enquiry
+            </a>
+          {% endif %}
+
+          {% if user.is_authenticated and car.dealer != user %}
+            <a href="{% url 'add_to_wishlist' car.id %}"
+               class="btn btn-outline-danger">
+              ❤️
+            </a>
+          {% endif %}
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DESCRIPTION -->
+  <div class="card mt-5 shadow-sm border-0">
+    <div class="card-body">
+      <h4>Description</h4>
+      <p class="text-muted">{{ car.description }}</p>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

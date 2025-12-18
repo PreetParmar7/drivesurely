@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- FILTER FORM --><br>
+<form method="get" class="row g-3 mb-4">
+
+  <div class="col-md-4">
+    <input type="text"
+           name="brand"
+           class="form-control"
+           placeholder="Search by brand"
+           value="{{ request.GET.brand }}">
+  </div>
+
+  <div class="col-md-3">
+    <select name="fuel" class="form-select">
+      <option value="">Fuel Type</option>
+      <option value="Petrol" {% if request.GET.fuel == 'Petrol' %}selected{% endif %}>Petrol</option>
+      <option value="Diesel" {% if request.GET.fuel == 'Diesel' %}selected{% endif %}>Diesel</option>
+      <option value="Electric" {% if request.GET.fuel == 'Electric' %}selected{% endif %}>Electric</option>
+    </select>
+  </div>
+
+  <div class="col-md-3">
+    <select name="transmission" class="form-select">
+      <option value="">Transmission</option>
+      <option value="Manual" {% if request.GET.transmission == 'Manual' %}selected{% endif %}>Manual</option>
+      <option value="Automatic" {% if request.GET.transmission == 'Automatic' %}selected{% endif %}>Automatic</option>
+    </select>
+  </div>
+
+  <div class="col-md-2">
+    <button class="btn btn-dark w-100">Apply</button>
+  </div>
+
+</form>
+
+<!-- LISTING -->
+<div class="container mt-5">
+  <h2 class="mb-4 text-center">Available Cars</h2>
+
+  <div class="row">
+    {% for car in cars %}
+     <div class="col-md-4 mb-4">
+  <div class="card car-list-card h-100 border-0 shadow-sm">
+
+    <!-- IMAGE -->
+    <div class="car-image-wrapper">
+      {% if car.main_image %}
+        <img src="{{ car.main_image.url }}"
+             class="card-img-top"
+             alt="{{ car.title }}">
+      {% endif %}
+
+      {% if car.dealer.dealer_profile.is_verified %}
+        <span class="badge bg-success verified-badge">
+          ✔ Verified
+        </span>
+      {% endif %}
+    </div>
+
+    <!-- BODY -->
+    <div class="card-body">
+      <h5 class="fw-semibold mb-1">{{ car.title }}</h5>
+
+      <p class="text-muted small mb-1">
+        {{ car.brand }}
+        {% if car.engine_capacity %} • {{ car.engine_capacity }}{% endif %}
+      </p>
+
+      <p class="text-muted small mb-2">
+        {% if car.transmission %}{{ car.transmission }} • {% endif %}
+        {{ car.year }}
+      </p>
+
+      <p class="price-text mb-0">₹ {{ car.price }}</p>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="card-footer bg-white border-0 pt-0">
+      <div class="d-flex gap-2 align-items-center">
+
+        <a href="{% url 'car_detail' car.id %}"
+           class="btn btn-dark flex-fill rounded-pill">
+          View
+        </a>
+
+        <a href="{% url 'add_to_compare' car.id %}"
+           class="btn btn-outline-secondary rounded-circle icon-btn"
+           title="Compare">
+          ⇄
+        </a>
+
+        {% if user.is_authenticated and user.profile.role == 'customer' %}
+          <a href="{% url 'add_to_wishlist' car.id %}"
+             class="btn btn-outline-danger rounded-circle icon-btn"
+             title="Wishlist">
+            ❤️
+          </a>
+        {% endif %}
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+    {% empty %}
+      <p class="text-center">No cars found.</p>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- PAGINATION -->
+<nav class="mt-4">
+  <ul class="pagination justify-content-center">
+
+    {% if cars.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ cars.previous_page_number }}">Previous</a>
+      </li>
+    {% endif %}
+
+    {% for num in cars.paginator.page_range %}
+      {% if cars.number == num %}
+        <li class="page-item active">
+          <span class="page-link">{{ num }}</span>
+        </li>
+      {% else %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+        </li>
+      {% endif %}
+    {% endfor %}
+
+    {% if cars.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ cars.next_page_number }}">Next</a>
+      </li>
+    {% endif %}
+
+  </ul>
+</nav>
+
+{% endblock %}

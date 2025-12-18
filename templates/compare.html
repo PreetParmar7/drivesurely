@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Compare Cars</h2>
+
+  <div class="row">
+
+    {% for car in cars %}
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+
+        {% if car.main_image %}
+          <img src="{{ car.main_image.url }}"
+               class="card-img-top"
+               height="250">
+        {% endif %}
+
+        <div class="card-body text-center">
+          <h4>{{ car.title }}</h4>
+          <p class="text-muted">{{ car.brand }} • {{ car.year }}</p>
+          <h5 class="text-primary">₹ {{ car.price }}</h5>
+        </div>
+
+      </div>
+    </div>
+    {% endfor %}
+
+  </div>
+
+  <hr>
+
+  <!-- COMPARISON TABLE -->
+  <table class="table table-bordered mt-4">
+    <tbody>
+
+      <tr>
+        <th>Engine</th>
+        {% for car in cars %}
+          <td>{{ car.engine_capacity|default:"—" }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <th>Transmission</th>
+        {% for car in cars %}
+          <td>{{ car.transmission|default:"—" }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <th>Mileage</th>
+        {% for car in cars %}
+          <td>{{ car.mileage|default:"—" }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <th>Fuel Type</th>
+        {% for car in cars %}
+          <td>{{ car.fuel_type }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <th>Status</th>
+        {% for car in cars %}
+          <td>{{ car.status }}</td>
+        {% endfor %}
+      </tr>
+
+    </tbody>
+  </table>
+
+  <div class="text-center mt-4">
+    <a href="{% url 'clear_compare' %}"
+       class="btn btn-outline-danger">
+      Clear Compare
+    </a>
+  </div>
+
+</div>
+
+{% endblock %}

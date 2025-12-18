@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<section class="contact-section section-light">
+  <div class="contact-container">
+
+    <!-- LEFT INFO -->
+    <div class="contact-info">
+      <h1>Contact CarZone</h1>
+
+      {% if user.is_authenticated %}
+        {% if user.profile.role == 'dealer' %}
+          <p>
+            Have a question about listings, enquiries, or dealer tools?
+            Our dealer support team is here to help.
+          </p>
+        {% else %}
+          <p>
+            Need help with a car enquiry or facing an issue?
+            Our customer support team will assist you.
+          </p>
+        {% endif %}
+      {% else %}
+        <p>
+          Interested in buying or selling a car?
+          Reach out to our sales or support team.
+        </p>
+      {% endif %}
+
+      <div class="contact-details">
+        <p><strong>Email:</strong> support@carzone.com</p>
+        <p><strong>Phone:</strong> +91 98765 43210</p>
+        <p><strong>Hours:</strong> Mon – Sat, 9AM – 6PM</p>
+      </div>
+    </div>
+
+    <!-- RIGHT FORM -->
+    <div class="contact-form-box">
+      <h3>Send us a message</h3>
+
+      <form method="post">
+        {% csrf_token %}
+
+        <!-- CONTACT TYPE (SMART) -->
+        <label>Query Type</label>
+        <select name="type" class="form-select mb-3" required>
+          {% if user.is_authenticated and user.profile.role == 'dealer' %}
+            <option value="dealer_support">Dealer Support</option>
+            <option value="partnership">Business Partnership</option>
+          {% elif user.is_authenticated %}
+            <option value="customer_support">Customer Support</option>
+            <option value="general">General Enquiry</option>
+          {% else %}
+            <option value="sales">Sales</option>
+            <option value="support">Support</option>
+            <option value="general">General Enquiry</option>
+          {% endif %}
+        </select>
+
+        <input type="text" name="name" class="form-control mb-3"
+               placeholder="Your Name"
+               value="{{ user.username|default:'' }}" required>
+
+        <input type="email" name="email" class="form-control mb-3"
+               placeholder="Your Email"
+               value="{{ user.email|default:'' }}" required>
+
+        <input type="text" name="subject" class="form-control mb-3"
+               placeholder="Subject" required>
+
+        <textarea name="message" rows="5" class="form-control mb-4"
+                  placeholder="Write your message..." required></textarea>
+
+        <button class="btn btn-primary w-100 rounded-pill py-3">
+          Send Message
+        </button>
+      </form>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

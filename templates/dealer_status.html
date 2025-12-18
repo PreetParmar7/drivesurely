@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container mt-5" style="max-width: 900px;">
+
+  <!-- PAGE TITLE -->
+  <h2 class="fw-bold mb-4">Dealer Verification Status</h2>
+
+  <!-- STATUS CARD -->
+  <div class="card shadow-sm mb-4 p-4">
+
+    {% if profile.is_verified %}
+      <div class="d-flex align-items-center gap-3">
+        <span class="badge bg-success fs-6 px-3 py-2">✔ Verified</span>
+        <h5 class="mb-0 text-success">Your account is verified</h5>
+      </div>
+      <p class="text-muted mt-2">
+        You can now add cars and receive customer enquiries.
+      </p>
+
+    {% else %}
+      <div class="d-flex align-items-center gap-3">
+        <span class="badge bg-warning text-dark fs-6 px-3 py-2">
+          ⏳ Verification Pending
+        </span>
+        <h5 class="mb-0">Under Review</h5>
+      </div>
+      <p class="text-muted mt-2">
+        Our team is reviewing your submitted documents.
+      </p>
+    {% endif %}
+
+  </div>
+<div class="card shadow-sm p-4 mb-4">
+  <h6 class="fw-semibold mb-3">Verification Progress</h6>
+
+  <div class="d-flex justify-content-between text-center">
+
+    <div>
+      <div class="rounded-circle bg-success text-white d-inline-flex
+                  align-items-center justify-content-center"
+           style="width:40px;height:40px;">
+        ✔
+      </div>
+      <p class="mt-2 mb-0">Submitted</p>
+    </div>
+
+    <div>
+      <div class="rounded-circle {% if profile.admin_message %}bg-success{% else %}bg-secondary{% endif %}
+                  text-white d-inline-flex align-items-center justify-content-center"
+           style="width:40px;height:40px;">
+        🔍
+      </div>
+      <p class="mt-2 mb-0">Reviewed</p>
+    </div>
+
+    <div>
+      <div class="rounded-circle {% if profile.is_verified %}bg-success{% else %}bg-secondary{% endif %}
+                  text-white d-inline-flex align-items-center justify-content-center"
+           style="width:40px;height:40px;">
+        ⭐
+      </div>
+      <p class="mt-2 mb-0">Approved</p>
+    </div>
+
+  </div>
+</div>
+
+  <!-- DOCUMENTS CARD -->
+  <div class="card shadow-sm mb-4 p-4">
+    <h5 class="fw-semibold mb-3">Submitted Documents</h5>
+
+    <div class="row">
+
+      <!-- GST -->
+      <div class="col-md-6 mb-3">
+        <strong>GST Number</strong>
+        <p class="mb-1">
+          {{ profile.gst_number|default:"Not provided" }}
+        </p>
+
+        {% if profile.gst_document %}
+          <span class="badge bg-success">Uploaded</span>
+        {% else %}
+          <span class="badge bg-danger">Missing</span>
+        {% endif %}
+      </div>
+
+      <!-- ID -->
+      <div class="col-md-6 mb-3">
+        <strong>ID Document</strong><br>
+
+        {% if profile.id_document %}
+          <span class="badge bg-success">Uploaded</span>
+        {% else %}
+          <span class="badge bg-danger">Missing</span>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ADMIN MESSAGE (OPTIONAL) -->
+<div class="card shadow-sm mb-4 p-4
+            {% if profile.admin_message %}
+              border-start border-4 border-primary
+            {% else %}
+              border-start border-4 border-secondary
+            {% endif %}">
+
+  <h6 class="fw-bold mb-2">Message from Admin</h6>
+
+  {% if profile.admin_message %}
+    <p class="mb-0 text-muted">
+      {{ profile.admin_message }}
+    </p>
+  {% else %}
+    <p class="mb-0 text-muted fst-italic">
+      No message from admin yet.
+      Your documents are under review.
+    </p>
+  {% endif %}
+
+</div>
+
+  <!-- ACTION -->
+  <div class="text-end mt-4">
+    {% if not profile.is_verified %}
+      <a href="{% url 'edit_dealer_profile' %}"
+         class="btn btn-outline-primary rounded-pill px-4">
+        Update Documents
+      </a>
+    {% else %}
+      <a href="{% url 'add_car' %}"
+         class="btn btn-success rounded-pill px-4">
+        Add Your First Car
+      </a>
+    {% endif %}
+  </div>
+
+</div>
+<br><br>
+{% endblock %}
