@@ -1122,7 +1122,7 @@ p {
   .hero-video {
     background:
       linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)),
-      url("/static/images/hero-fallback.jpg") center/cover no-repeat;
+      /* url("/static/images/hero-fallback.jpg") center/cover no-repeat; */
   }
 
   .hero-video h1 {
