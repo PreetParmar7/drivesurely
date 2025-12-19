@@ -199,30 +199,48 @@ def delete_car(request, id):
 
 # ---------------- AUTH ----------------
 from .emails import send_welcome_email
-
 def register(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
+
         if form.is_valid():
-            user = form.save()
+            user = form.save(commit=False)
+            user.save()
+
             role = form.cleaned_data['role']
 
-            Profile.objects.get_or_create(
-                user=user,
-                defaults={'role': role}
+            # ✅ CREATE PROFILE FIRST (CRITICAL)
+            profile, created = Profile.objects.get_or_create(
+                user=user
             )
+            profile.role = role
+            profile.save()
 
+            # ✅ CREATE DEALER PROFILE IMMEDIATELY
             if role == 'dealer':
                 DealerProfile.objects.get_or_create(
                     user=user,
                     defaults={'company_name': user.username}
                 )
 
-            # ✅ EMAIL (BLOCKING, RELIABLE)
-            if user.email:
-                send_welcome_email(user.email, user.username)
-
+            # ✅ LOGIN AFTER EVERYTHING IS READY
             login(request, user)
+
+            # ✅ SEND EMAIL (NON-BLOCKING, SAFE)
+            if user.email:
+                Thread(
+                    target=send_welcome_email,
+                    args=(user.email, user.username)
+                ).start()
+
+            # ✅ ROLE-BASED REDIRECT (NOW RELIABLE)
+            if role == 'dealer':
+                messages.info(
+                    request,
+                    "Please complete your dealer profile and upload documents for verification."
+                )
+                return redirect('edit_dealer_profile')
+
             return redirect('home')
 
     else:
