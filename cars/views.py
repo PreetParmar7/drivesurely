@@ -14,6 +14,7 @@ from django.conf import settings
 from .models import Profile
 from threading import Thread
 from .emails import send_enquiry_email
+from .emails import send_welcome_email
 
 from .models import (
     Car, CarImage, Enquiry, EnquiryReply,
