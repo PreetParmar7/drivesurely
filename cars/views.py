@@ -7,7 +7,6 @@ from django.contrib import messages
 from django.conf import settings
 from django.contrib.auth.views import LoginView
 
-from practice.grateful.models import car
 from .models import Car, Enquiry, EnquiryReply, Wishlist, ContactMessage
 from .models import DealerProfile
 from django.contrib.auth.models import User
