@@ -1,20 +1,19 @@
-import profile
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from django.views.decorators.http import require_POST
 from django.contrib import messages
-from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.views import LoginView
 from .models import Car, Enquiry, EnquiryReply, Wishlist, ContactMessage
 from .models import DealerProfile
 from django.contrib.auth.models import User
 from threading import Thread
-from django.core.mail import send_mail
 from django.conf import settings
 from .models import Profile
+from threading import Thread
+from .emails import send_enquiry_email
 
 from .models import (
     Car, CarImage, Enquiry, EnquiryReply,
@@ -62,7 +61,6 @@ def car_detail(request, id):
 
 
 # ---------------- ENQUIRIES ----------------
-
 def send_enquiry(request, id):
     car = get_object_or_404(Car, id=id)
 
@@ -71,29 +69,24 @@ def send_enquiry(request, id):
         if form.is_valid():
             enquiry = form.save(commit=False)
             enquiry.car = car
+
             if request.user.is_authenticated:
                 enquiry.user = request.user
+
             enquiry.save()
 
             if car.dealer and car.dealer.email:
-                send_mail(
-                    'New Enquiry 🚗',
-                    enquiry.message,
-                    settings.DEFAULT_FROM_EMAIL,
-                    [car.dealer.email],
-                    fail_silently=True
-                )
-            if request.user.is_authenticated:
-                return redirect('my_enquiries')
-            else:
-                return redirect('car_detail', id=car.id)
+                Thread(
+                    target=send_enquiry_email,
+                    args=(car.dealer.email, enquiry.message)
+                ).start()
 
+            return redirect('my_enquiries' if request.user.is_authenticated else 'car_detail', id=car.id)
 
     return render(request, 'send_enquiry.html', {
         'car': car,
         'form': EnquiryForm()
     })
-
 
 @login_required
 def my_enquiries(request):
@@ -209,45 +202,32 @@ def register(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
-            if user.email:
-                Thread(
-                target=send_welcome_email,
-                args=(user.email, user.username)
-                ).start()
             role = form.cleaned_data['role']
 
-            # ✅ PROFILE (SAFE)
-            profile, created = Profile.objects.get_or_create(
+            Profile.objects.get_or_create(
                 user=user,
                 defaults={'role': role}
             )
-            if not created and profile.role != role:
-                profile.role = role
-                profile.save()
 
-            # ✅ DEALER PROFILE (SAFE)
             if role == 'dealer':
                 DealerProfile.objects.get_or_create(
                     user=user,
                     defaults={'company_name': user.username}
                 )
 
-            # ✅ EMAIL
-            # ✅ EMAIL (NON-BLOCKING)
-            if user.email:
+            # ✅ NON-BLOCKING EMAIL
+            if user.email and settings.EMAIL_ENABLED:
                 Thread(
                     target=send_welcome_email,
                     args=(user.email, user.username)
                 ).start()
 
-
             login(request, user)
 
-            # ✅ CORRECT REDIRECT
             if role == 'dealer':
                 messages.info(
                     request,
-                    "Please complete your dealer profile and upload documents for verification."
+                    "Please complete your dealer profile and upload documents."
                 )
                 return redirect('edit_dealer_profile')
 
@@ -334,26 +314,6 @@ def contact(request):
         return redirect('contact')
 
     return render(request, 'contact.html')
-from threading import Thread
-from django.core.mail import send_mail
-from django.conf import settings
-
-def send_welcome_email(email, username):
-    try:
-        send_mail(
-            subject="Welcome to DriveSurely 🚗",
-            message=(
-                f"Hi {username},\n\n"
-                "Welcome to DriveSurely!\n\n"
-                "Please complete your profile.\n\n"
-                "— DriveSurely Team"
-            ),
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[email],
-            fail_silently=False,
-        )
-    except Exception as e:
-        print("Email error:", e)
 
 @login_required
 @require_POST
