@@ -216,7 +216,7 @@ def register(request):
                 )
 
             # ✅ NON-BLOCKING EMAIL
-            if user.email and settings.EMAIL_ENABLED:
+            if user.email :
                 Thread(
                     target=send_welcome_email,
                     args=(user.email, user.username)
