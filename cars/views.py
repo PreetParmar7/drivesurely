@@ -6,6 +6,8 @@ from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.conf import settings
 from django.contrib.auth.views import LoginView
+
+from practice.grateful.models import car
 from .models import Car, Enquiry, EnquiryReply, Wishlist, ContactMessage
 from .models import DealerProfile
 from django.contrib.auth.models import User
@@ -82,7 +84,11 @@ def send_enquiry(request, id):
                     args=(car.dealer.email, enquiry.message)
                 ).start()
 
-            return redirect('my_enquiries' if request.user.is_authenticated else 'car_detail', id=car.id)
+            #return redirect('my_enquiries' if request.user.is_authenticated else 'car_detail', id=car.id)
+            if request.user.is_authenticated:
+                return redirect('my_enquiries')
+            else:
+                return redirect('car_detail', id=car.id)
 
     return render(request, 'send_enquiry.html', {
         'car': car,
