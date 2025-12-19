@@ -198,6 +198,8 @@ def delete_car(request, id):
 
 
 # ---------------- AUTH ----------------
+from .emails import send_welcome_email
+
 def register(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
@@ -216,29 +218,17 @@ def register(request):
                     defaults={'company_name': user.username}
                 )
 
-            # ✅ NON-BLOCKING EMAIL
-            if user.email :
-                Thread(
-                    target=send_welcome_email,
-                    args=(user.email, user.username)
-                ).start()
+            # ✅ EMAIL (BLOCKING, RELIABLE)
+            if user.email:
+                send_welcome_email(user.email, user.username)
 
             login(request, user)
-
-            if role == 'dealer':
-                messages.info(
-                    request,
-                    "Please complete your dealer profile and upload documents."
-                )
-                return redirect('edit_dealer_profile')
-
             return redirect('home')
 
     else:
         form = RegisterForm()
 
     return render(request, 'register.html', {'form': form})
-
 
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
