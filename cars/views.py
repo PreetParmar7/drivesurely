@@ -209,6 +209,11 @@ def register(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
+            if user.email:
+                Thread(
+                target=send_welcome_email,
+                args=(user.email, user.username)
+                ).start()
             role = form.cleaned_data['role']
 
             # ✅ PROFILE (SAFE)
