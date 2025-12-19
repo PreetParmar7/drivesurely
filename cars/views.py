@@ -11,7 +11,9 @@ from django.contrib.auth.views import LoginView
 from .models import Car, Enquiry, EnquiryReply, Wishlist, ContactMessage
 from .models import DealerProfile
 from django.contrib.auth.models import User
-
+from threading import Thread
+from django.core.mail import send_mail
+from django.conf import settings
 from .models import Profile
 
 from .models import (
@@ -226,19 +228,13 @@ def register(request):
                 )
 
             # ✅ EMAIL
+            # ✅ EMAIL (NON-BLOCKING)
             if user.email:
-                send_mail(
-                    subject='Welcome to DriveSurely 🚗',
-                    message=(
-                        f"Hi {user.username},\n\n"
-                        "Welcome to DriveSurely!\n\n"
-                        "Please complete your profile.\n\n"
-                        "— DriveSurely Team"
-                    ),
-                    from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipient_list=[user.email],
-                    fail_silently=True,
-                )
+                Thread(
+                    target=send_welcome_email,
+                    args=(user.email, user.username)
+                ).start()
+
 
             login(request, user)
 
@@ -327,18 +323,27 @@ def contact(request):
             user=request.user if request.user.is_authenticated else None
         )
 
-        send_mail(
-            subject=f"[{contact.type.upper()}] {contact.subject}",
-            message=contact.message,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[settings.DEFAULT_FROM_EMAIL],
-            fail_silently=True,
-        )
+
 
         messages.success(request, "Thanks! Our team will contact you shortly.")
         return redirect('contact')
 
     return render(request, 'contact.html')
+from threading import Thread
+from django.core.mail import send_mail
+from django.conf import settings
+
+def send_welcome_email(email, message):
+    try:
+        send_mail(
+            subject='Welcome to DriveSurely 🚗',
+            message=message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[email],
+            fail_silently=True,
+        )
+    except Exception as e:
+        print("Email error:", e)
 
 @login_required
 @require_POST
