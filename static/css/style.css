@@ -766,31 +766,81 @@ p {
     grid-template-columns: 1fr;
   }
 }
+/* DEALER HERO */
 .dealer-hero {
-  height: 420px;
+  position: relative;
+  width: 100%;
+  height: 45vh;
   background-size: cover;
   background-position: center;
-  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
 }
 
+/* DARK OVERLAY */
 .dealer-hero-overlay {
-  background: rgba(0,0,0,0.6);
-  color: white;
-  height: 100%;
-  padding: 60px;
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+}
+
+/* CONTENT */
+.dealer-hero-content {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
+  padding: 0 24px;
+  color: #fff;
 }
 
+/* LOGO */
 .dealer-logo {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  object-fit: cover;
-  background: white;
-  margin-bottom: 20px;
+  height: 80px;
+  width: auto;
+  border-radius: 12px;
+  background: #fff;
+  padding: 8px;
 }
+
+/* TEXT */
+.dealer-hero-content h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.dealer-hero-content p {
+  font-size: 1.1rem;
+  max-width: 700px;
+  color: #e5e7eb;
+}
+
+/* MOBILE FIX */
+@media (max-width: 768px) {
+  .dealer-hero {
+    height: 32vh;
+  }
+
+  .dealer-hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .dealer-hero-content p {
+    font-size: 0.95rem;
+  }
+
+  .dealer-logo {
+    height: 60px;
+  }
+}
+
+
+
 /* ===== CAR LIST CARD ===== */
 .car-list-card {
   border-radius: 18px;

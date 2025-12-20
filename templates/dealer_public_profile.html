@@ -6,7 +6,7 @@
 
   <!-- ===== HERO ===== -->
   <div class="dealer-hero"
-       style="background-image:url('{% if profile.banner %}{{ profile.banner.url }}{% else %}{% static 'images/dealer-banner.jpg' %}{% endif %}')">
+       style="background-image:url('{% if profile.banner %}{{ profile.banner.url }}{% else %}{% static 'images/dealer-banner.png' %}{% endif %}')">
 
     <div class="dealer-hero-overlay text-center">
       {% if profile.logo %}
@@ -14,7 +14,7 @@
       {% endif %}
       <h1>{{ profile.company_name }}</h1>
       <p>{{ profile.about }}</p>
-    </div>
+    </div>  
   </div>
 
   <!-- ===== DEALER INFO ===== -->
