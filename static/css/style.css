@@ -771,90 +771,76 @@ p {
 .dealer-hero {
   position: relative;
   width: 100%;
-  height: 50vh;
+  min-height: 320px;
+  border-radius: 24px;
+  overflow: hidden;
   background-size: cover;
   background-position: center;
-  border-radius: 18px;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
 }
 
-/* OVERLAY (lighter now) */
-.dealer-hero-overlay {
+/* Gradient overlay instead of grey wash */
+.dealer-hero::before {
+  content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(
     to right,
-    rgba(255,255,255,0.85),
-    rgba(255,255,255,0.6),
-    rgba(255,255,255,0.2)
+    rgba(255,255,255,0.15) 0%,
+    rgba(255,255,255,0.6) 45%,
+    rgba(255,255,255,0.95) 75%
   );
   z-index: 1;
 }
 
-
-/* CONTENT WRAPPER */
-.dealer-hero-content {
-  position: absolute;
-  inset: 0;
+/* CONTENT */
+.dealer-hero-overlay {
+  position: relative;
   z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 0 6%;
+  max-width: 45%;
+  margin-left: auto;
+  margin-right: 48px;
+  text-align: left;
 }
 
-/* TEXT BLOCK (RIGHT SIDE) */
-.dealer-hero-text {
-  max-width: 520px;
-  color:#111827;
-  text-align: left;
+/* TEXT */
+.dealer-hero-overlay h1 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 12px;
+}
+
+.dealer-hero-overlay p {
+  font-size: 1.05rem;
+  color: #374151;
+  line-height: 1.6;
 }
 
 /* LOGO */
 .dealer-logo {
-  height: 72px;
-  background: white;
-  padding: 8px;
-  border-radius: 12px;
-}
-
-/* TEXT */
-.dealer-hero-text h1 {
-  font-size: 3rem;
-  font-weight: 800;
+  height: 64px;
+  width: auto;
   margin-bottom: 12px;
-}
-
-.dealer-hero-text p {
-  font-size: 1.05rem;
-  color:  #374151;
-  line-height: 1.6;
 }
 
 /* MOBILE */
 @media (max-width: 768px) {
   .dealer-hero {
-    height: 35vh;
+    min-height: 260px;
   }
 
-  .dealer-hero-content {
-    justify-content: center;
-    padding: 0 20px;
-  }
-
-  .dealer-hero-text {
+  .dealer-hero-overlay {
+    max-width: 100%;
+    margin: 0 20px;
     text-align: center;
   }
 
-  .dealer-hero-text h1 {
+  .dealer-hero-overlay h1 {
     font-size: 2rem;
   }
-
-  .dealer-hero-text p {
-    font-size: 0.95rem;
-  }
 }
-
 
 
 /* ===== CAR LIST CARD ===== */
