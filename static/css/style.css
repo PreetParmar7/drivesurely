@@ -767,76 +767,91 @@ p {
   }
 }
 /* DEALER HERO */
-/* ===== DEALER HERO ===== */
+/* DEALER HERO */
 .dealer-hero {
   position: relative;
   width: 100%;
-  min-height: 360px;
-  border-radius: 24px;
-  overflow: hidden;
+  height: 50vh;
   background-size: cover;
-  background-position: left center;
+  background-position: center;
+  border-radius: 18px;
+  overflow: hidden;
 }
 
-/* RIGHT-SIDE TEXT BOX */
+/* OVERLAY (lighter now) */
 .dealer-hero-overlay {
   position: absolute;
-  top: 50%;
-  right: 48px;
-  transform: translateY(-50%);
-  width: 420px;
-  padding: 28px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 20px;
-  box-shadow: 0 18px 40px rgba(0,0,0,0.15);
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(255,255,255,0.85),
+    rgba(255,255,255,0.6),
+    rgba(255,255,255,0.2)
+  );
+  z-index: 1;
 }
 
-/* TEXT RESET */
-.dealer-hero-overlay h1 {
-  font-size: 2.4rem;
-  font-weight: 800;
-  color: #0f172a;
-  margin-bottom: 12px;
+
+/* CONTENT WRAPPER */
+.dealer-hero-content {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 6%;
 }
 
-.dealer-hero-overlay p {
-  font-size: 1rem;
-  color: #475569;
-  line-height: 1.6;
+/* TEXT BLOCK (RIGHT SIDE) */
+.dealer-hero-text {
+  max-width: 520px;
+  color:#111827;
+  text-align: left;
 }
-/* PREVENT GLOBAL HERO STYLES FROM AFFECTING DEALER PAGE */
-.dealer-hero h1,
-.dealer-hero p {
-  all: unset;
-}
-
-.dealer-hero-overlay h1,
-.dealer-hero-overlay p {
-  all: revert;
-}
-.position-fixed {
-  display: none !important;
-}
-
 
 /* LOGO */
 .dealer-logo {
-  height: 56px;
+  height: 72px;
+  background: white;
+  padding: 8px;
+  border-radius: 12px;
+}
+
+/* TEXT */
+.dealer-hero-text h1 {
+  font-size: 3rem;
+  font-weight: 800;
   margin-bottom: 12px;
+}
+
+.dealer-hero-text p {
+  font-size: 1.05rem;
+  color: #374151;
+  line-height: 1.6;
 }
 
 /* MOBILE */
 @media (max-width: 768px) {
   .dealer-hero {
-    min-height: 280px;
-    background-position: center;
+    height: 35vh;
   }
 
-  .dealer-hero-overlay {
-    right: 50%;
-    transform: translate(50%, -50%);
-    width: 90%;
+  .dealer-hero-content {
+    justify-content: center;
+    padding: 0 20px;
+  }
+
+  .dealer-hero-text {
     text-align: center;
+  }
+
+  .dealer-hero-text h1 {
+    font-size: 2rem;
+  }
+
+  .dealer-hero-text p {
+    font-size: 0.95rem;
   }
 }
 
