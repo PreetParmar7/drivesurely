@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load price_filters %}
 {% block content %}
 
 <div class="container mt-5">
@@ -19,7 +20,7 @@
         <div class="card-body text-center">
           <h4>{{ car.title }}</h4>
           <p class="text-muted">{{ car.brand }} • {{ car.year }}</p>
-          <h5 class="text-primary">₹ {{ car.price }}</h5>
+          <h5 class="text-primary">₹ {{ car.price|indian_price }}</h5>
         </div>
 
       </div>

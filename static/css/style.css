@@ -784,11 +784,13 @@ p {
   inset: 0;
   background: linear-gradient(
     to right,
-    rgba(0,0,0,0.3),
-    rgba(0,0,0,0.7)
+    rgba(255,255,255,0.85),
+    rgba(255,255,255,0.6),
+    rgba(255,255,255,0.2)
   );
   z-index: 1;
 }
+
 
 /* CONTENT WRAPPER */
 .dealer-hero-content {
@@ -804,7 +806,7 @@ p {
 /* TEXT BLOCK (RIGHT SIDE) */
 .dealer-hero-text {
   max-width: 520px;
-  color: #fff;
+  color:#111827;
   text-align: left;
 }
 
@@ -825,7 +827,7 @@ p {
 
 .dealer-hero-text p {
   font-size: 1.05rem;
-  color: #e5e7eb;
+  color:  #374151;
   line-height: 1.6;
 }
 

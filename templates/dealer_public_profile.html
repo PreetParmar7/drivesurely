@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load price_filters %}
 {% load static %}
 {% block content %}
 
@@ -49,7 +50,7 @@
           <div class="card-body">
             <h5>{{ car.title }}</h5>
             <p class="text-muted">{{ car.brand }} • {{ car.year }}</p>
-            <p class="fw-bold">₹ {{ car.price }}</p>
+            <p class="fw-bold">₹ {{ car.price|indian_price }}</p>
             <a href="{% url 'car_detail' car.id %}" class="btn btn-outline-dark w-100">
               View
             </a>

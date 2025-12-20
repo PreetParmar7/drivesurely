@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load price_filters %}
 {% block content %}
 
 <div class="container mt-5">
@@ -52,7 +53,7 @@
                 <img src="{{ item.car.main_image.url }}" class="card-img-top">
                 <div class="card-body">
                   <h6>{{ item.car.title }}</h6>
-                  <p class="fw-bold">₹ {{ item.car.price }}</p>
+                  <p class="fw-bold">₹ {{ item.car.price|indian_price }}</p>
                   <a href="{% url 'car_detail' item.car.id %}"
                      class="btn btn-sm btn-outline-dark w-100">
                     View
