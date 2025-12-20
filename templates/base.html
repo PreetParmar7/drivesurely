@@ -57,68 +57,95 @@
 
 
 <body>
-  <nav class="navbar navbar-expand-lg fixed-top nav-transparent">
-  <div class="container-fluid px-5 d-flex align-items-center justify-content-between">
+<nav class="navbar navbar-expand-lg fixed-top nav-transparent">
+  <div class="container-fluid px-4">
 
-    <!-- LEFT : LOGO -->
-  <!-- LEFT : LOGO -->
-<a class="navbar-brand d-flex align-items-center gap-2 text-white fw-bold" href="/">
-  <img src="{% static 'images/logo.png' %}" alt="DriveSurely Logo" height="32">
-  <span>DriveSurely</span>
-</a>
+    <!-- LOGO -->
+    <a class="navbar-brand d-flex align-items-center gap-2 text-white fw-bold" href="/">
+      <img src="{% static 'images/logo.png' %}" height="32" alt="DriveSurely">
+      <span>DriveSurely</span>
+    </a>
 
+    <!-- TOGGLER -->
+    <button class="navbar-toggler" type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#mainNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-    <!-- CENTER : MAIN LINKS -->
-    <div class="d-none d-lg-flex align-items-center gap-4">
+    <!-- COLLAPSE -->
+    <div class="collapse navbar-collapse" id="mainNavbar">
 
-      <a href="{% url 'car_list' %}" class="nav-link">Browse Cars</a>
-      <a href="{% url 'contact' %}" class="nav-link">Contact</a>
+      <!-- CENTER LINKS -->
+      <ul class="navbar-nav mx-auto gap-lg-3">
 
-      {% if user.is_authenticated and user.profile.role == 'customer' %}
-        <a href="{% url 'my_enquiries' %}" class="nav-link">My Enquiries</a>
-        <a href="{% url 'wishlist' %}" class="nav-link">Wishlist</a>
-        <a href="{% url 'compare' %}" class="nav-link">Compare</a>
-      {% endif %}
+        <li class="nav-item">
+          <a href="{% url 'car_list' %}" class="nav-link">Browse Cars</a>
+        </li>
 
-      {% if user.is_authenticated and user.profile.role == 'dealer' %}
-        <span class="nav-divider"></span>
+        <li class="nav-item">
+          <a href="{% url 'contact' %}" class="nav-link">Contact</a>
+        </li>
 
-        <a href="{% url 'dealer_status' %}" class="nav-link">
-          Verification
-        </a>
+        {% if user.is_authenticated and user.profile.role == 'customer' %}
+          <li class="nav-item">
+            <a href="{% url 'my_enquiries' %}" class="nav-link">My Enquiries</a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'wishlist' %}" class="nav-link">Wishlist</a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'compare' %}" class="nav-link">Compare</a>
+          </li>
+        {% endif %}
 
-        {% if user.dealer_profile and user.dealer_profile.is_verified %}
-          <a href="{% url 'dealer_dashboard' %}" class="nav-link">Dashboard</a>
-          <a href="{% url 'dealer_enquiries' %}" class="nav-link">Enquiries</a>
-          <a href="{% url 'edit_dealer_profile' %}" class="nav-link">Profile</a>
+        {% if user.is_authenticated and user.profile.role == 'dealer' %}
 
-          <a href="{% url 'add_car' %}" class="btn btn-primary rounded-pill px-4 ms-2">
-            + Add Car
+          <li class="nav-item">
+            <a href="{% url 'dealer_status' %}" class="nav-link">Verification</a>
+          </li>
+
+          {% if user.dealer_profile.is_verified %}
+            <li class="nav-item">
+              <a href="{% url 'dealer_dashboard' %}" class="nav-link">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'dealer_enquiries' %}" class="nav-link">Enquiries</a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'edit_dealer_profile' %}" class="nav-link">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'add_car' %}" class="btn btn-primary rounded-pill px-4 ms-lg-2 mt-2 mt-lg-0">
+                + Add Car
+              </a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <span class="badge bg-warning text-dark mt-2">
+                Verification Pending
+              </span>
+            </li>
+          {% endif %}
+        {% endif %}
+      </ul>
+
+      <!-- RIGHT USER -->
+      <div class="d-flex gap-2 align-items-center mt-3 mt-lg-0">
+        {% if user.is_authenticated %}
+          <span class="text-white small">Hi, {{ user.username }}</span>
+          <a href="{% url 'logout' %}" class="btn btn-danger rounded-pill px-4">
+            Logout
           </a>
         {% else %}
-          <span class="badge bg-warning text-dark ms-2">
-            Verification Pending
-          </span>
+          <a href="{% url 'login' %}" class="nav-link">Login</a>
+          <a href="{% url 'register' %}" class="btn btn-primary rounded-pill px-4">
+            Register
+          </a>
         {% endif %}
-      {% endif %}
+      </div>
 
     </div>
-
-    <!-- RIGHT : USER -->
-    <div class="d-flex align-items-center gap-3">
-      {% if user.is_authenticated %}
-        <span class="text-white small">Hi, {{ user.username }}</span>
-        <a href="{% url 'logout' %}" class="btn btn-danger rounded-pill px-4">
-          Logout
-        </a>
-      {% else %}
-        <a href="{% url 'login' %}" class="nav-link">Login</a>
-        <a href="{% url 'register' %}" class="btn btn-primary rounded-pill px-4">
-          Register
-        </a>
-      {% endif %}
-    </div>
-
   </div>
 </nav>
 

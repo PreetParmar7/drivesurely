@@ -1398,7 +1398,7 @@ p {
 .cz-hero {
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: 60vh;
   margin-left: calc(-50vw + 50%);
   overflow: hidden;
   margin-top: 0;
@@ -1458,12 +1458,21 @@ p {
 
 /* MOBILE */
 @media (max-width: 768px) {
+  .cz-hero {
+    height: 35vh;
+  }
+
+  .cz-hero-video {
+    object-fit: contain;   /* ✅ THIS IS THE REAL FIX */
+    background: #000;
+  }
+
   .cz-hero-content {
-    bottom: 40px;
+    bottom: 32px;
   }
 
   .cz-hero-content h1 {
-    font-size: 2.2rem;
+    font-size: 2rem;
   }
 
   .cz-hero-actions {
