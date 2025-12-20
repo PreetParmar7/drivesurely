@@ -5,17 +5,21 @@
 <section class="container mt-5">
 
   <!-- ===== HERO ===== -->
-  <div class="dealer-hero"
-       style="background-image:url('{% if profile.banner %}{{ profile.banner.url }}{% else %}{% static 'images/dealer-banner.png' %}{% endif %}')">
+<div class="dealer-hero"
+     style="background-image:url('{% if profile.banner %}{{ profile.banner.url }}{% else %}{% static 'images/dealerbanner.png' %}{% endif %}')">
 
-    <div class="dealer-hero-overlay text-center">
+  <div class="dealer-hero-overlay"></div>
+
+  <div class="dealer-hero-content">
+    <div class="dealer-hero-text">
       {% if profile.logo %}
         <img src="{{ profile.logo.url }}" class="dealer-logo mb-3">
       {% endif %}
       <h1>{{ profile.company_name }}</h1>
       <p>{{ profile.about }}</p>
-    </div>  
+    </div>
   </div>
+</div>
 
   <!-- ===== DEALER INFO ===== -->
   <div class="card p-4 shadow-sm my-5">
